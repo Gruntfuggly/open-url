@@ -1,0 +1,74 @@
+{
+    "name": "open-url",
+    "displayName": "Opens a URL with placeholders.",
+    "description": "",
+    "keywords": [],
+    "icon": "icon.png",
+    "version": "0.0.1",
+    "license": "MIT",
+    "publisher": "Gruntfuggly",
+    "repository": "https://github.com/Gruntfuggly/open-url",
+    "engines": {
+        "vscode": "^1.5.0"
+    },
+    "categories": [
+        "Other"
+    ],
+    "activationEvents": [
+        "onStartupFinished"
+    ],
+    "main": "./extension",
+    "contributes": {
+        "commands": [
+            {
+                "command": "open-url.open",
+                "title": "Open URL",
+                "category": "Open URL"
+            }
+        ],
+        "menus": {
+            "editor/context": [
+                {
+                    "command": "open-url.open",
+                    "when": "editorHasSelection",
+                    "section": "open-url"
+                }
+            ],
+            "commandPalette": [
+                {
+                    "command": "open-url.open",
+                    "when": "editorHasSelection"
+                }
+            ]
+        },
+        "configuration": {
+            "type": "object",
+            "title": "Open URL",
+            "properties": {
+                "open-url.url": {
+                    "default": "https://www.google.com/search?q=${TM_SELECTED_TEXT}",
+                    "markdownDescription": "The URL to open. `${TM_SELECTED_TEXT}` will be replaced by the current selection. Uppercase and lowercase transformations are also supported. e.g. `${TM_SELECTED_TEXT/downcase/}`.",
+                    "type": "string"
+                },
+                "open-url.notification": {
+                    "markdownDescription": "How to show what URL is being opened",
+                    "type": "string",
+                    "default": "none",
+                    "enum": [
+                        "none",
+                        "popup",
+                        "statusBar"
+                    ],
+                    "markdownEnumDescriptions": [
+                        "Don't show a notification",
+                        "Show the URL in a popup",
+                        "Show the URL on the status bar"
+                    ]
+                }
+            }
+        }
+    },
+    "devDependencies": {
+        "vscode": "^1.0.0"
+    }
+}
