@@ -1,10 +1,10 @@
 {
     "name": "open-url",
-    "displayName": "Opens a URL with placeholders.",
-    "description": "",
+    "displayName": "Open URL",
+    "description": "Opens a URL with placeholders",
     "keywords": [],
     "icon": "icon.png",
-    "version": "0.0.1",
+    "version": "0.0.2",
     "license": "MIT",
     "publisher": "Gruntfuggly",
     "repository": "https://github.com/Gruntfuggly/open-url",
