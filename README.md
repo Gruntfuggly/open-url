@@ -20,13 +20,17 @@ The source code is available on GitHub [here](https://github.com/Gruntfuggly/ope
 
 ## Configuration
 
-`open-url.url` (default:`https://www.google.com/search?q=${TM_SELECTED_TEXT}`)
+`open-url.url`
 
-The URL to open. `${TM_SELECTED_TEXT}` will be replaced by the current selection. Uppercase and lowercase transformations are also supported. e.g. `${TM_SELECTED_TEXT/downcase/}`.
+>The URL to open. `${TM_SELECTED_TEXT}` will be replaced by the current selection. Uppercase and lowercase transformations are also supported. e.g. `${TM_SELECTED_TEXT/downcase/}`.
+>
+>default: `https://www.google.com/search?q=${TM_SELECTED_TEXT}`
 
-`open-url.notification` (default:`none`)
+`open-url.notification`
 
-How to show what URL is being opened. Valid values are `none`, `popup` or `statusBar`.
+> How to show what URL is being opened. Valid values are `none`, `popup` or `statusBar`.
+>
+>default: `none`
 
 ## Credits
 

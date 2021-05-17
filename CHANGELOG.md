@@ -1,5 +1,7 @@
 # Open URL
 
+- Improve README.md layout
+
 ## v0.0.2 - 2021-02-10
 
 - Fix title and description
