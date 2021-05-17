@@ -64,11 +64,21 @@
                         "Show the URL in a popup",
                         "Show the URL on the status bar"
                     ]
+                },
+                "open-url.regex": {
+                    "markdownDescription": "A regex to match selections for opening. When this matches the current selection, a button will be shown on the status bar which can be used to  open the URL.",
+                    "type": "string",
+                    "default": ""
                 }
             }
         }
     },
     "devDependencies": {
         "vscode": "^1.0.0"
+    },
+    "__metadata": {
+        "id": "ae723fe3-8cb6-4949-91f7-4bbab33a9859",
+        "publisherId": "d4906d2e-f2ee-492d-9c7c-02b6160599ec",
+        "publisherDisplayName": "Gruntfuggly"
     }
 }

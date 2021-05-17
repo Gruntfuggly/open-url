@@ -1,6 +1,7 @@
 # Open URL
 
 - Improve README.md layout
+- Add a status bar item with regex match to make opening easier
 
 ## v0.0.2 - 2021-02-10
 

@@ -32,6 +32,12 @@ The source code is available on GitHub [here](https://github.com/Gruntfuggly/ope
 >
 >default: `none`
 
+`open-url.regex`
+
+>A regex to match selections for opening. When this matches the current selection, a button will be shown on the status bar (with a book icon) which can be used to quickly open the URL. For example, set it to `^Q[A-Za-z]+$` to match Qt classes.
+>
+>default: `""`
+
 ## Credits
 
 Icon made by [https://www.freepik.com](Freepik) from [https://www.flaticon.com](www.flaticon.com).

@@ -2,6 +2,10 @@ var vscode = require( 'vscode' );
 
 function activate( context )
 {
+    var statusBarItem = vscode.window.createStatusBarItem( vscode.StatusBarAlignment.Right, 0 );
+    context.subscriptions.push( statusBarItem );
+    statusBarItem.command = "open-url.open";
+
     context.subscriptions.push( vscode.commands.registerCommand( 'open-url.open', function()
     {
         var editor = vscode.window.activeTextEditor;
@@ -71,6 +75,30 @@ function activate( context )
                 vscode.env.openExternal( vscode.Uri.parse( url ) );
             }
         }
+    } ) );
+
+    context.subscriptions.push( vscode.window.onDidChangeTextEditorSelection( function( e )
+    {
+        if( e && e.selections.length > 0 )
+        {
+            var selectedText = e.textEditor.document.getText( e.textEditor.selection ).trim().replace( /(\r\n|\n|\r)/gm, ' ' );
+            var regex = vscode.workspace.getConfiguration( 'open-url' ).get( 'regex' );
+
+            if( regex && selectedText.match( regex ) )
+            {
+                if( selectedText.length > 17 )
+                {
+                    selectedText = selectedText.substr( 0, 20 ) + "...";
+                }
+                if( selectedText.length > 0 )
+                {
+                    statusBarItem.text = "$(book) " + selectedText;
+                    statusBarItem.show();
+                    return;
+                }
+            }
+        }
+        statusBarItem.hide();
     } ) );
 }
 
