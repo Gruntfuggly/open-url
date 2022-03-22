@@ -48,7 +48,8 @@
                 "open-url.url": {
                     "default": "https://www.google.com/search?q=${TM_SELECTED_TEXT}",
                     "markdownDescription": "The URL to open. `${TM_SELECTED_TEXT}` will be replaced by the current selection. Uppercase and lowercase transformations are also supported. e.g. `${TM_SELECTED_TEXT/downcase/}`.",
-                    "type": "string"
+                    "type": "string",
+                    "scope": "language-overridable"
                 },
                 "open-url.notification": {
                     "markdownDescription": "How to show what URL is being opened",
@@ -68,7 +69,14 @@
                 "open-url.regex": {
                     "markdownDescription": "A regex to match selections for opening. When this matches the current selection, a button will be shown on the status bar which can be used to  open the URL.",
                     "type": "string",
-                    "default": ""
+                    "default": "",
+                    "scope": "language-overridable"
+                },
+                "open-url.regexes": {
+                    "markdownDescription": "An object containing mapping of regexes to URLs. This allows multiple regex and URLs to be specified.",
+                    "type": "object",
+                    "default": {},
+                    "scope": "language-overridable"
                 }
             }
         }
@@ -79,6 +87,7 @@
     "__metadata": {
         "id": "ae723fe3-8cb6-4949-91f7-4bbab33a9859",
         "publisherId": "d4906d2e-f2ee-492d-9c7c-02b6160599ec",
-        "publisherDisplayName": "Gruntfuggly"
+        "publisherDisplayName": "Gruntfuggly",
+        "installedTimestamp": 1635409377828
     }
 }

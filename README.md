@@ -20,23 +20,39 @@ The source code is available on GitHub [here](https://github.com/Gruntfuggly/ope
 
 ## Configuration
 
-`open-url.url`
+### `open-url.url`
 
->The URL to open. `${TM_SELECTED_TEXT}` will be replaced by the current selection. Uppercase and lowercase transformations are also supported. e.g. `${TM_SELECTED_TEXT/downcase/}`.
->
->default: `https://www.google.com/search?q=${TM_SELECTED_TEXT}`
+The URL to open. `${TM_SELECTED_TEXT}` will be replaced by the current selection. Uppercase and lowercase transformations are also supported. e.g. `${TM_SELECTED_TEXT/downcase/}`.
 
-`open-url.notification`
+default: `https://www.google.com/search?q=${TM_SELECTED_TEXT}`
 
-> How to show what URL is being opened. Valid values are `none`, `popup` or `statusBar`.
->
->default: `none`
+### `open-url.notification`
 
-`open-url.regex`
+How to show what URL is being opened. Valid values are `none`, `popup` or `statusBar`.
 
->A regex to match selections for opening. When this matches the current selection, a button will be shown on the status bar (with a book icon) which can be used to quickly open the URL. For example, set it to `^Q[A-Za-z]+$` to match Qt classes.
->
->default: `""`
+default: `none`
+
+### `open-url.regex`
+
+A regex to match selections for opening. When this matches the current selection, a button will be shown on the status bar (with a book icon) which can be used to quickly open the URL. For example, set it to `^Q[A-Za-z]+$` to match Qt classes. Note: if a capture group is defined in the regex, it's contents will be substituted instead of the whole selection.
+
+default: `""`
+
+### `open-url.regexes`
+
+An object mapping regexes to URLs. This allows multiple patterns to be defined.
+
+default: `{}`
+
+Example:
+
+```json
+"open-url.regexes": {
+    "juce::(.*)": "https://docs.juce.com/master/class${TM_SELECTED_TEXT}.html",
+    ".*": "https://cmake.org/cmake/help/latest/command/${TM_SELECTED_TEXT}.html
+}
+```
+
 
 ## Credits
 

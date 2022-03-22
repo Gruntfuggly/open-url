@@ -1,5 +1,9 @@
 # Open URL
 
+## v0.0.4 - 2022-03-17
+
+- Add support for multiple regexes and URLs
+
 ## v0.0.3 - 2021-05-17
 
 - Improve README.md layout
