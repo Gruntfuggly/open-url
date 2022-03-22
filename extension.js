@@ -2,7 +2,8 @@ var vscode = require( 'vscode' );
 
 function activate( context )
 {
-    function generateUrl( selectedText, url, generateWarning )
+
+    function generateUrl( selectedText, url, showWarning )
     {
         return url.replace( placeholderRegex, function( fullMatch, placeholder, placeholderName, transformation )
         {
@@ -14,7 +15,7 @@ function activate( context )
             }
             else
             {
-                if( generateWarning )
+                if( showWarning )
                 {
                     vscode.window.showErrorMessage( "Unsupported placeholder: " + placeholderName );
                 }
@@ -45,56 +46,6 @@ function activate( context )
         } );
     }
 
-    function getUrl( selectedText, generateWarning, editor )
-    {
-
-        var regexes = {};
-        var configuredRegexes = vscode.workspace.getConfiguration( 'open-url' ).get( 'regexes' );
-
-        Object.keys( configuredRegexes ).forEach( function( regex )
-        {
-            regexes[ regex ] = configuredRegexes[ regex ];
-        } );
-
-        var defaultRegex = vscode.workspace.getConfiguration( 'open-url' ).get( 'regex' );
-        var defaultUrl = vscode.workspace.getConfiguration( 'open-url', editor ).get( 'url' );
-        console.log( "DEFAULT:" + defaultUrl );
-
-        if( defaultRegex )
-        {
-            regexes[ defaultRegex ] = defaultUrl;
-        }
-
-        var found = false;
-        var url;
-
-        Object.keys( regexes ).forEach( function( regex )
-        {
-            if( found === false && regex )
-            {
-                var match = selectedText.match( regex );
-                if( match && selectedText.length > 0 )
-                {
-                    var argument = selectedText;
-                    console.log( "match:" + JSON.stringify( match ) );
-                    if( match[ 1 ] )
-                    {
-                        argument = match[ 1 ];
-                    }
-                    url = generateUrl( argument, regexes[ regex ], generateWarning );
-                    found = true;
-                }
-            }
-        } );
-
-        if( found == false )
-        {
-            url = generateUrl( selectedText, defaultUrl, true );
-        }
-
-        return url;
-    }
-
     var placeholderRegex = new RegExp( "(\\$\\{(.*?)(/.*/)?})", 'g' );
 
     var statusBarItem = vscode.window.createStatusBarItem( vscode.StatusBarAlignment.Right, 0 );
@@ -107,19 +58,49 @@ function activate( context )
 
         if( editor && editor.document )
         {
+            var config = vscode.workspace.getConfiguration( 'open-url', editor.document );
+            var regexes = config.get( 'regexes' );
+            console.log( JSON.stringify( regexes, null, 2 ) );
+            var defaultRegex = config.get( 'regex' );
+            var defaultUrl = config.get( 'url' );
+
+            if( defaultRegex )
+            {
+                regexes[ defaultRegex ] = defaultUrl;
+            }
+
             var selectedText = editor.document.getText( editor.selection );
 
-            var url = getUrl( selectedText, true, editor );
+            var found = false;
+            var url;
 
-            if( !url )
+            Object.keys( regexes ).forEach( function( regex )
             {
-                vscode.window.showWarningMessage( "No URL defined?" );
+                if( found === false && regex )
+                {
+                    var match = selectedText.match( regex );
+                    if( match && selectedText.length > 0 )
+                    {
+                        var argument = selectedText;
+                        if( match[ 1 ] )
+                        {
+                            argument = match[ 1 ];
+                        }
+                        url = generateUrl( argument, regexes[ regex ], true );
+                        found = true;
+                    }
+                }
+            } );
+
+            if( found == false )
+            {
+                vscode.window.showInformationMessage( "No URL found?" );
                 return;
             }
 
             var message = "Opening " + url + "...";
 
-            var notification = vscode.workspace.getConfiguration( 'open-url' ).get( 'notification' );
+            var notification = vscode.workspace.getConfiguration( 'open-url', editor.document ).get( 'notification' );
 
             if( notification === 'popup' )
             {
@@ -134,32 +115,53 @@ function activate( context )
         }
     } ) );
 
-    context.subscriptions.push( vscode.window.onDidChangeTextEditorSelection( function( editor )
+    context.subscriptions.push( vscode.window.onDidChangeTextEditorSelection( function( e )
     {
         var found = false;
-        if( editor && editor.selections.length > 0 )
+        if( e && e.selections.length > 0 )
         {
-            var selectedText = editor.textEditor.document.getText( editor.textEditor.selection ).trim().replace( /(\r\n|\n|\r)/gm, ' ' );
+            var selectedText = e.textEditor.document.getText( e.textEditor.selection ).trim().replace( /(\r\n|\n|\r)/gm, ' ' );
 
-            var url = getUrl( selectedText, false, editor );
+            var config = vscode.workspace.getConfiguration( 'open-url', e.textEditor.document );
 
-            if( url )
+            var regexes = config.get( 'regexes' );
+            var defaultRegex = config.get( 'regex' );
+            var defaultUrl = config.get( 'url' );
+
+            if( defaultRegex )
             {
-                found = true;
-                statusBarItem.tooltip = url;
-                if( selectedText.length > 17 )
-                {
-                    selectedText = selectedText.substring( 0, 20 ) + "...";
-                }
-                if( selectedText.length > 0 )
-                {
-                    statusBarItem.text = "$(book) " + selectedText;
-                    statusBarItem.show();
-                }
+                regexes[ defaultRegex ] = defaultUrl;
             }
-        }
 
-        if( !found )
+            Object.keys( regexes ).forEach( function( regex )
+            {
+                if( found === false && regex )
+                {
+                    var match = selectedText.match( regex );
+                    if( match && selectedText.length > 0 )
+                    {
+                        var argument = selectedText;
+                        if( match[ 1 ] )
+                        {
+                            argument = match[ 1 ];
+                        }
+
+                        statusBarItem.tooltip = generateUrl( argument, regexes[ regex ], false );
+                        if( selectedText.length > 17 )
+                        {
+                            selectedText = selectedText.substring( 0, 20 ) + "...";
+                        }
+                        if( selectedText.length > 0 )
+                        {
+                            statusBarItem.text = "$(book) " + selectedText;
+                            statusBarItem.show();
+                            found = true;
+                        }
+                    }
+                }
+            } );
+        }
+        if( found === false )
         {
             statusBarItem.hide();
         }

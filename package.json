@@ -4,7 +4,7 @@
     "description": "Opens a URL with placeholders",
     "keywords": [],
     "icon": "icon.png",
-    "version": "0.0.3",
+    "version": "0.0.4",
     "license": "MIT",
     "publisher": "Gruntfuggly",
     "repository": "https://github.com/Gruntfuggly/open-url",
@@ -64,7 +64,8 @@
                         "Don't show a notification",
                         "Show the URL in a popup",
                         "Show the URL on the status bar"
-                    ]
+                    ],
+                    "scope": "language-overridable"
                 },
                 "open-url.regex": {
                     "markdownDescription": "A regex to match selections for opening. When this matches the current selection, a button will be shown on the status bar which can be used to  open the URL.",

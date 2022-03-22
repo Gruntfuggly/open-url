@@ -1,8 +1,9 @@
 # Open URL
 
-## v0.0.4 - 2022-03-17
+## v0.0.4 - 2022-03-22
 
 - Add support for multiple regexes and URLs
+- Allow settings to be language overridable
 
 ## v0.0.3 - 2021-05-17
 
