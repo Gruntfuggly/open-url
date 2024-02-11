@@ -46,6 +46,19 @@ function activate( context )
         } );
     }
 
+    function getSelectedText( editor )
+    {
+        var selection = editor.selection;
+        if ( selection.isEmpty ) {
+            var range = editor.document.getWordRangeAtPosition(selection.start);
+            if( range )
+            {
+                return editor.document.getText(range);
+            }
+        }
+        return editor.document.getText(selection);
+    }
+
     var placeholderRegex = new RegExp( "(\\$\\{(.*?)(/.*/)?})", 'g' );
 
     var statusBarItem = vscode.window.createStatusBarItem( vscode.StatusBarAlignment.Right, 0 );
@@ -69,7 +82,7 @@ function activate( context )
                 regexes[ defaultRegex ] = defaultUrl;
             }
 
-            var selectedText = editor.document.getText( editor.selection );
+            var selectedText = getSelectedText( editor );
 
             var found = false;
             var url;
